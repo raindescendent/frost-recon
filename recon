@@ -1,0 +1,74 @@
+#!/bin/bash
+
+common_ports="20,21,22,23,25,53,80,123,161,443,445,1433,1434,1521,3306,3389,5060,5432,8000,8080,8443"
+
+echo "Welcome to Frost Scan, please enter a target IP address:"
+read target_ip
+
+interface=$(ip route get "$target_ip" | grep -oP 'dev \K\S+')
+network_range=$(ip -o -4 addr show "$interface" | awk '/inet/ {print $4}')
+
+if [ -z "$network_range" ]; then
+    echo "Failed to determine IPv4 network range. Please check the IP address."
+    exit 1
+fi
+
+echo "IPv4 network range: $network_range"
+
+echo "Started to perform a ping scan. Searching for live host(s) in the network..."
+nmap_output=$(nmap -sn $network_range)
+
+live_hosts=$(echo "$nmap_output" | grep "Nmap scan report" | awk '{print $5}')
+
+# Check if any live hosts were found
+if [ -z "$live_hosts" ]; then
+    echo "No live hosts found in the network range $network_range. Exiting..."
+    exit 1
+fi
+
+network_name=$(echo "$network_range" | cut -d'/' -f1)
+echo "Saving live host(s) IP(s) in a .txt file: $network_name.txt" 
+echo "$live_hosts" > "$network_name.txt"
+
+nums_ips=$(wc -l < "$network_name.txt")
+echo "There are $nums_ips active live host(s) on $network_name network."
+
+temp_file="${network_name}_temp.txt"
+
+while IFS= read -r ip; do
+    echo "[$ip]: Scanning common ports"
+
+    scan_result=$(sudo nmap -sS -p "$common_ports" "$ip")
+
+    open_ports=""
+
+    echo "$scan_result" | grep -q "open"
+    if [ $? -eq 0 ]; then
+        open_ports=$(echo "$scan_result" | grep "open" | awk '{print $1}' | tr '\n' ',' | sed 's/,$//')
+        echo "[$ip]: Opened Ports [$open_ports]"
+        echo "[$ip]: Opened Ports [$open_ports]" >> "$temp_file"
+    else
+        echo "[$ip]: No common ports are opened"
+	echo "[$ip]: Proceeding to full range port scan"
+
+        scan_result=$(sudo nmap -sS -PN -n --min-rate 5000 -p- "$ip")
+        
+        open_ports=$(echo "$scan_result" | grep "open" | awk '{print $1}' | tr '\n' ',' | sed 's/,$//')
+
+        if [ -n "$open_ports" ]; then
+            echo "[$ip]: Opened Full Range Ports [$open_ports]"
+            echo "[$ip]:	Opened Full Range Ports [$open_ports]" >> "$temp_file"
+        else
+            echo "[$ip]: No open ports found in the full range scan."
+            echo "[$ip]:	No open ports found in the full range scan." >> "$temp_file"
+        fi
+    fi
+
+    echo  
+
+done < "$network_name.txt"
+
+mv "$temp_file" "$network_name.txt"
+
+echo "Scan completed. Results saved in $network_name.txt"
+
