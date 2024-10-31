@@ -1,102 +1,125 @@
-
 # Frost Scan - Script de Reconocimiento de Red 🛡️
 
 ### **Autor**: [Santiago Gimenez]  
 ### **A.K.A.**: [descendent]  
 
-[README Version en Inglés](#english-version)
-
-[README Version en Español](#)
+[README English Version](#english-version)
 
 ---
 
 ## Descripción general
 
-**Frost Scan** un script en Bash simple pero potente, realiza reconocimiento de red utilizando **nmap**. Este script escanea una dirección IPv4 introducida por el user, buscando host(s) activos y sus respectivos puertos abiertos, resultando en un reporte final basico de cada uno.
-
-Este proyecto fue creado en 3 días siendo parte de mi proceso de aprendizaje sobre **scripting en Bash**, **nmap**, y conceptos básicos de **redes**.
+**Frost Scan** un script en Bash simple pero potente, realiza reconocimiento de red automatizado utilizando las herramientas **Nmap** & **Netcat**. Este script escanea una dirección IPv4 introducida por el usuario, determina dinámicamente la subred, ejecutando una búsqueda de host(s) activos y sus respectivos puertos abiertos, resultando en un reporte final detallado de cada puerto abierto, servicio y versión.
 
 ## Características ✨
 
-- **Descubrimiento de Red**: Detecta host(s) activos en una red determinada mediante **escaneos de ping**.
-- **Detección de SO**: Detecta automáticamente si estás usando Linux o macOS, guiando a los usuarios para instalar `nmap` si es necesario.
+- **Descubrimiento de Red**: Detecta host(s) activos determinando la subred de la dirección IPv4 brindada mediante **escaneos de ping**.
+- **Detección de SO**: Detecta automáticamente si el usuario del script usa Linux o macOS, guiándolos para instalar las herramientas `Nmap` y `Netcat` si es necesario.
 - **Escaneo de Puertos**:
-  - **Escaneo de Puertos estandar**: Escanea los puertos de servicios estandar (SSH, HTTP, FTP, etc.).
-  - **Escaneo de Rango Completo de Puertos**: Si no se encuentran abiertos los puertos standard, el script realiza un escaneo de la totalidad de puertos.
-- **Resultados**: Guarda los host(s) activos y sus respectivos puertos abiertos en un archivo de texto formateado como un informe básico.
+- **Escaneo de Puertos estándar**: Escanea los puertos de servicios estándar más reconocidos (SSH, HTTP, FTP, etc.).
+- **Escaneo de Rango Completo de Puertos**: Si no se encuentran abiertos ninguno de los puertos estándar, el script realiza un escaneo del rango total de puertos existentes.
+- **Resultados**: Guarda los host(s) activos **reportando el S.O., puertos abiertos y el detalle del servicio en ejecución y su versión.**
 
 ## ¿Cómo Funciona? 🔍
 
-El script sigue estos pasos básicos:
 
-1. **Configuración del entorno**: Detecta tu sistema operativo y verifica si `nmap` está instalado.
-2. **Subred**: Toma la IP proporcionada por el usuario y calcula el rango de la subred.
-3. **Descubriendo host(s) con ping**: Encuentra host(s) activos dentro de la red.
-4. **Escaneo de puertos**: Primero escanea los puertos standard en los host(s) activos. Si no se encuentran abiertos, se inicia un escaneo completo de la totalidad de puertos.
-5. **Registro de resultados**: Guarda las direcciones IP(s) de cada host adicionando sus respectivos puertos abiertos en un archivo de texto.
+1. Modificar **permisos** del script y ejecutarlo con **privilegios de root**
+<img src="https://imgur.com/X8VtgiY.jpeg" alt="Setting script permissions" width="640px" /> 
 
-## Motivación 💡
+2. Ingresar la direccion IPv4 del objetivo
 
-Este proyecto marca un evento importante sobre mi aprendizaje. En el transcurso de 3 días, logre profundizar mi conocimiento en:
+3. Determina la **subred enumerando los host(s) activos** dentro 
+<img src="https://imgur.com/uP3hPy5.jpeg" alt="Program example discovers subnet and live host(s)" width="640px" /> 
+
+4. Reporta en terminal las direcciones IPv4 detectadas con sus respectivos servicios activos y puertos TCP abiertos 
+<img src="https://imgur.com/17Zjirx.jpeg" alt="Terminal output example showing host IP address, open TCP ports and active services" width="640px" /> 
+
+5. Guarda la informacion detallada de cada host en un archivo de texto
+<img src="https://imgur.com/QQlMEzE.jpeg" alt="Showing hosts detailed saved on a text file" width="640px" /> 
+<img src="https://imgur.com/ydnz5CD.jpeg" alt="Showing hosts detailed saved on a text file" width="640px" /> 
+
+
+## Claves del proyecto y motivación 💡
+
+Este proyecto fue realizado con el objetivo de seguir expandiendo mis sólidas bases en la ejecución de pruebas de vulnerabilidad. Logré profundizar mi conocimiento en:
+
 - **Scripting en Bash**,
 - **Escaneo de redes** y fundamentos de ciberseguridad orientados a pentesting,
-- Y diversos testeos con **nmap** como herramienta de reconocimiento de red.
+- **Reconocimiento** de puertos, servicios y del S.O. detrás de la dirección IP objetivo, 
+- **Automatización** de procesos usando **Nmap** y **Netcat** como herramientas de escaneo.
 
-Este proyecto, es clave para:
-- Entender cómo automatizar el reconocimiento ofensivo de red,
-- Aprender sobre escaneo de puertos y servicios,
-- Desarrollar un script adaptable a diferentes sistemas operativos.
 
 ## Requisitos 🛠️
 
 - **Bash** (Pre-instalado en la mayoría de sistemas Linux/macOS)
-- **nmap** (Si no está instalado, el script brinda instrucciones para instalarlo)
+- **Nmap** (Si no está instalado, el script brinda instrucciones para instalarlo)
+- **Netcat** (Si no está instalado, el script brinda instrucciones para instalarlo)
 
 ## Uso 🖥️
 
 1. Clonar el repositorio:
 
-    \`\`\`bash
+    ```bash
     git clone https://github.com/raindescendent/frost-recon.git
     cd frost-recon
-    \`\`\`
+    ```
 
 2. Hacer el script ejecutable:
 
-    \`\`\`bash
+    ```bash
     chmod 755 frost-recon.sh
-    \`\`\`
+    ```
 
 3. Ejecutar el script con privilegios de root (esto es importante para el escaneo de red):
 
-    \`\`\`bash
+    ```bash
     sudo sh ./frost-recon.sh
-    \`\`\`
+    ```
 
 4. Ingresar la dirección IPv4 objetivo.
 
-5. Revisar los resultados en el archivo de texto generado después de completar los escaneos.
+5. Revisar los resultados en el archivo del reporte generado después de completar los escaneos.
 
 ## Resultado 📄
 
-Aquí hay un ejemplo de cómo el script registra en un archivo los hosts descubiertos y los puertos abiertos:
+Aquí hay un ejemplo de cómo el script registra y reporta en un archivo los live hosts descubiertos, el sistema operativo en ejecución, puertos abiertos y servicios activos:
 
 
 \`\`\`
-192.168.1.10: Opened Ports [22,80,443]
-192.168.1.15: No common ports are opened
-192.168.1.15: Opened Full Range Ports [8080,8443]
+[192.168.1.11]
+O.S: Linux 4.9
+[Open TCP Ports]
+[22, 23, 80, 443, 8000]
+
+
+PORT   		SERVICE        	VERSION
+22     	 	ssh            	SSH-2.0-dropbear_2019.78
+23     	 	telnet         	(none) login:
+80     	 	http           	HTTP/1.1
+443    	 	ssl/http       	Unknown service
+8000   	 	http           	HTTP/1.1
+
+
+[192.168.1.12]
+No open common ports on 192.168.1.12. Proceeding to full range scan.
+O.S: Unknown
+[Open TCP Ports]
+[135, 1844, 2179, 7680, 27036, 28198]
+
+
+PORT   		SERVICE        		VERSION
+135    		msrpc          	    Unknown service
+1844   		direcpc-dll    	    Unknown service
+2179   		vmrdp          	    Unknown service
+7680   		pando-pub      	    Unknown service
+27036  		unknown        	    Unknown service
+28198  		unknown        	    Unknown service
 \`\`\`
 
-## Lo Aprendido 📝
-
-- **Automatización**: Tareas de reconocimiento ofensivo de red.
-- **Nmap**.
-- **Scripting en Bash**.
 
 ### Mejoras Futuras:
 - Añadir funcionalidad para **IPv6**.
-- Añadir más características como **Detección de servicios** y **Reporte del sistema operativo de host**.
+
 
 ## Conectate Conmigo 💬
 
@@ -104,114 +127,140 @@ Aquí hay un ejemplo de cómo el script registra en un archivo los hosts descubi
 
 - [LinkedIn](https://www.linkedin.com/in/santigimenez-dev) – ¡Hablemos sobre ciberseguridad y pentesting!
 
+
 ---
 
 ---
+
 
 <a id="english-version"></a>
-
 # Frost Scan - Network Reconnaissance Script 🛡️
 
 ### **Author**: [Santiago Gimenez]  
 ### **A.K.A.**: [descendent]  
 
-[Spanish README](#)
-
-[English README](#english-version)
+[README Spanish Version](#spanish-version)
 
 ---
 
 ## Overview
 
-Welcome to **Frost Scan**, a simple yet powerful Bash script designed to perform network reconnaissance using **nmap**. This script scans a specified target IPv4 address searching for live host(s) and their respective open ports, providing essential network information in an organized and automated way.
+**Frost Scan** is a simple yet powerful Bash script that performs automated network reconnaissance using the **Nmap** and **Netcat** tools. This script scans an IPv4 address provided by the user, dynamically determines the subnet, and performs a search for active host(s) and their respective open ports, resulting in a detailed final report of each open port, service, and version.
 
-This project was completed in just **2-3 days** as part of my journey to learn **shell scripting**, **nmap**, and basic **networking concepts**.
 
 ## Features ✨
 
-- **OS Detection**: Automatically identifies if you're running Linux or macOS, guiding users through the installation of `nmap` if necessary.
-- **Network Discovery**: Detects live host(s) on a given network using **ping scans**.
+- **Network Discovery**: Detects active host(s) by determining the subnet of the provided IPv4 address through **ping scans**.
+- **OS Detection**: Automatically detects if the user is running Linux or macOS, guiding them to install the `Nmap` and `Netcat` tools if necessary.
 - **Port Scanning**:
-  - **Common Ports Scan**: Scans standard service ports (SSH, HTTP, FTP, etc.).
-  - **Full Range Port Scan**: If standard ports aren't found open, the script performs a full-range port scan to uncover hidden services.
-- **Results Output**: Saves live hosts and open ports into a formatted text file as a basic report.
+- **Standard Port Scanning**: Scans for the most recognized standard service ports (SSH, HTTP, FTP, etc.).
+- **Full Range Port Scanning**: If none of the standard ports are found open, the script performs a full range scan of existing ports.
+- **Results**: Saves active host(s) **reporting the OS, open ports, and details of the running service and its version.**
 
-## How It Works 🔍
+## How Does It Work? 🔍
 
-The script follows these basic steps:
 
-1. **Environment Setup**: It detects your operating system and checks if `nmap` is installed.
-2. **Network Range Determination**: Takes the user-provided target IP and calculates the subnet range.
-3. **Ping Scan**: Finds live hosts within the network.
-4. **Port Scanning**: First scans standard ports on live hosts. If no open ports are found, it switches to a full port scan.
-5. **Result Logging**: Saves the results of the open ports into a text file for easy access.
+1. **Modify the script permissions** and run it with **root privileges**.  
+   <img src="https://imgur.com/X8VtgiY.jpeg" alt="Setting script permissions" width="640px" />
 
-## Motivation 💡
+2. **Enter the target's IPv4 address**.
 
-This project marks a important key in my learning journey. Over the course of just 3 days, I was able to expand my knowledge in:
-- **Shell scripting** in Bash,
-- **Network scanning** and security pentest fundamentals,
-- And the capabilities of **nmap** as a network reconnaissance tool.
+3. **Determine the subnet and start to enumerate the active host(s)**.  
+   <img src="https://imgur.com/uP3hPy5.jpeg" alt="Program example discovers subnet and live hosts" width="640px" />
 
-By diving into this project, I was able to:
-- Understand how to automate network offensive recon,
-- Learn about port scanning,
-- Develop a script that is adaptable to different operating systems.
+4. **Report the detected IPv4 addresses in the terminal** along with their respective active services and open TCP ports.  
+   <img src="https://imgur.com/17Zjirx.jpeg" alt="Terminal output example showing host IP address, open TCP ports and active services" width="640px" />
 
-## Prerequisites 🛠️
+5. **Save detailed information about each host in a text file**.  
+   <img src="https://imgur.com/QQlMEzE.jpeg" alt="Showing hosts detailed saved on a text file" width="640px" />  
+   <img src="https://imgur.com/ydnz5CD.jpeg" alt="Showing hosts detailed saved on a text file" width="640px" />
+
+
+## Project Keys and Motivation 💡
+
+This project was created with the goal of further expanding my solid foundations in penetration testing. I was able to deepen my knowledge in:
+
+- **Bash Scripting**,
+- **Network Scanning** and cybersecurity fundamentals oriented towards pentesting,
+- **Reconnaissance** of ports, services, banner grabbing and O.S. fingerprinting, 
+- **Automation** using **Nmap** and **Netcat** as scanning tools.
+
+## Requirements 🛠️
 
 - **Bash** (Pre-installed on most Linux/macOS systems)
-- **nmap** (If not installed, the script provides instructions to install it)
+- **Nmap** (If not installed, the script provides instructions for installation)
+- **Netcat** (If not installed, the script provides instructions for installation)
 
 ## Usage 🖥️
 
 1. Clone the repository:
 
-    \`\`\`bash
+    ```bash
     git clone https://github.com/raindescendent/frost-recon.git
-    cd frost-scan
-    \`\`\`
+    cd frost-recon
+    ```
 
 2. Make the script executable:
 
-    \`\`\`bash
+    ```bash
     chmod 755 frost-recon.sh
-    \`\`\`
+    ```
 
 3. Run the script with root privileges (this is important for network scanning):
 
-    \`\`\`bash
+    ```bash
     sudo sh ./frost-recon.sh
-    \`\`\`
+    ```
 
-4. Input your target IPv4 address when prompted.
+4. Enter the target IPv4 address.
 
-5. Review the results in the generated text file after the scan completes.
+5. Review the results in the report file generated after completing the scans.
 
-## Example Output 📄
+## Output 📄
 
-Here's an example of how the script logs into a file the discovered hosts and open ports:
+Here’s an example of how the script logs and reports in a file the discovered live hosts, the operating system in use, open ports, and active services:
+
 
 \`\`\`
-192.168.1.10: Opened Ports [22,80,443]
-192.168.1.15: No common ports are opened
-192.168.1.15: Opened Full Range Ports [8080,8443]
+[192.168.1.11]
+O.S: Linux 4.9
+[Open TCP Ports]
+[22, 23, 80, 443, 8000]
+
+
+PORT   		SERVICE        	VERSION
+22     	 	ssh            	SSH-2.0-dropbear_2019.78
+23     	 	telnet         	(none) login:
+80     	 	http           	HTTP/1.1
+443    	 	ssl/http       	Unknown service
+8000   	 	http           	HTTP/1.1
+
+
+[192.168.1.12]
+No open common ports on 192.168.1.12. Proceeding to full range scan.
+O.S: Unknown
+[Open TCP Ports]
+[135, 1844, 2179, 7680, 27036, 28198]
+
+
+PORT   		SERVICE        		VERSION
+135    		msrpc          	    Unknown service
+1844   		direcpc-dll    	    Unknown service
+2179   		vmrdp          	    Unknown service
+7680   		pando-pub      	    Unknown service
+27036  		unknown        	    Unknown service
+28198  		unknown        	    Unknown service
 \`\`\`
 
-## Learned 📝
-
-- **Automation**: Network offensive recon tasks.
-- **Nmap**.
-- **Bash Scripting**.
 
 ### Future Improvements:
-- Add **IPv6** support.
-- Add more features like **service detection** or **OS fingerprinting**.
+- Add functionality for **IPv6**.
 
 ## Connect with Me 💬
 
-- I will be glad to receive your constructive critics about the project.
+- I am open to receiving constructive critics about the project.
 
-- [LinkedIn](https://www.linkedin.com/in/santigimenez-dev) – Let’s connect and talk about cybersecurity and pentesting!
+- [LinkedIn](https://www.linkedin.com/in/santigimenez-dev) – Let’s talk about cybersecurity and pentesting!
+
 
 ---
