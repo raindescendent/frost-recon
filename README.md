@@ -1,3 +1,4 @@
+<a id="spanish-version"></a>
 # Frost Scan - Script de Reconocimiento de Red 🛡️
 
 ### **Autor**: [Santiago Gimenez]  
@@ -79,42 +80,6 @@ Este proyecto fue realizado con el objetivo de seguir expandiendo mis sólidas b
 4. Ingresar la dirección IPv4 objetivo.
 
 5. Revisar los resultados en el archivo del reporte generado después de completar los escaneos.
-
-## Resultado 📄
-
-Aquí hay un ejemplo de cómo el script registra y reporta en un archivo los live hosts descubiertos, el sistema operativo en ejecución, puertos abiertos y servicios activos:
-
-
-\`\`\`
-[192.168.1.11]
-O.S: Linux 4.9
-[Open TCP Ports]
-[22, 23, 80, 443, 8000]
-
-
-PORT   		SERVICE        	VERSION
-22     	 	ssh            	SSH-2.0-dropbear_2019.78
-23     	 	telnet         	(none) login:
-80     	 	http           	HTTP/1.1
-443    	 	ssl/http       	Unknown service
-8000   	 	http           	HTTP/1.1
-
-
-[192.168.1.12]
-No open common ports on 192.168.1.12. Proceeding to full range scan.
-O.S: Unknown
-[Open TCP Ports]
-[135, 1844, 2179, 7680, 27036, 28198]
-
-
-PORT   		SERVICE        		VERSION
-135    		msrpc          	    Unknown service
-1844   		direcpc-dll    	    Unknown service
-2179   		vmrdp          	    Unknown service
-7680   		pando-pub      	    Unknown service
-27036  		unknown        	    Unknown service
-28198  		unknown        	    Unknown service
-\`\`\`
 
 
 ### Mejoras Futuras:
@@ -215,42 +180,6 @@ This project was created with the goal of further expanding my solid foundations
 4. Enter the target IPv4 address.
 
 5. Review the results in the report file generated after completing the scans.
-
-## Output 📄
-
-Here’s an example of how the script logs and reports in a file the discovered live hosts, the operating system in use, open ports, and active services:
-
-
-\`\`\`
-[192.168.1.11]
-O.S: Linux 4.9
-[Open TCP Ports]
-[22, 23, 80, 443, 8000]
-
-
-PORT   		SERVICE        	VERSION
-22     	 	ssh            	SSH-2.0-dropbear_2019.78
-23     	 	telnet         	(none) login:
-80     	 	http           	HTTP/1.1
-443    	 	ssl/http       	Unknown service
-8000   	 	http           	HTTP/1.1
-
-
-[192.168.1.12]
-No open common ports on 192.168.1.12. Proceeding to full range scan.
-O.S: Unknown
-[Open TCP Ports]
-[135, 1844, 2179, 7680, 27036, 28198]
-
-
-PORT   		SERVICE        		VERSION
-135    		msrpc          	    Unknown service
-1844   		direcpc-dll    	    Unknown service
-2179   		vmrdp          	    Unknown service
-7680   		pando-pub      	    Unknown service
-27036  		unknown        	    Unknown service
-28198  		unknown        	    Unknown service
-\`\`\`
 
 
 ### Future Improvements:
